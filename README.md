@@ -3,7 +3,7 @@
 <h4>These two scripts together will fetch all the cases in the GDC which have Primary Solid Tumor and Solid Tissue Normal sample sequenced.</h4>
 <h4>You can put in filters for type of sequencing and type of tumor.</h4>
 
-<h4>Detailed instructions of how to use these scripts are present at the start of "get_gdc_data.py" script.</h4>
+Detailed instructions of how to use these scripts:
 
 
 Try to be on an educational network such as eduroam. Although I'm not certain, but I've 
@@ -28,5 +28,6 @@ Step 6: Run the "gather_gdc_uuid_links.py" script which will create some links f
 
 Note: These link files have the cases which were sequenced for both normal and tumor
 	samples. 
+
 
 Hope this helps! Thanks.
