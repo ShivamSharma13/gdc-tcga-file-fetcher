@@ -6,7 +6,7 @@
 <h4>Detailed instructions of how to use these scripts are present at the start of "get_gdc_data.py" script.</h4>
 
 
-<h4>Try to be on an educational network such as eduroam. Although I'm not certain, but I've 
+Try to be on an educational network such as eduroam. Although I'm not certain, but I've 
 seen significant delays in API response on private networks; AT&T in my case.
 
 Step 1: Set the data_path variable to the location of your choice. It's immediately after 
@@ -29,4 +29,4 @@ Step 6: Run the "gather_gdc_uuid_links.py" script which will create some links f
 Note: These link files have the cases which were sequenced for both normal and tumor
 	samples. 
 
-Hope this helps! Thanks.</h4>
+Hope this helps! Thanks.
