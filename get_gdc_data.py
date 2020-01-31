@@ -41,10 +41,10 @@ Hope this helps.
 
 ######################################################################################
 
-data_path = '../../../data/'
+data_path = 'data/'
 strategies = ['miRNA-Seq', 'RNA-Seq', 'WXS', 'WGS']
 #primary_sites=['Ovary']
-primary_sites=['Kidney']
+primary_sites=['Colon']
 
 sampe_id_to_type = {'01': 'Primary Solid Tumor', '11': 'Solid Tissue Normal', '10': 'Blood Derived Normal'}
 
@@ -132,7 +132,7 @@ def get_files_from_gdc(endpt, data_size=1, json_file_name='miRNA.json', experime
 					"op": "in",
 					"content":{
 						"field": "cases.project.primary_site",
-						"value": [primary_site_filter],
+						"value": ["Colorectal"],
 					}
 				},
 				{
@@ -165,6 +165,7 @@ def get_files_from_gdc(endpt, data_size=1, json_file_name='miRNA.json', experime
 		print("Internet Error, perhaps a query error?")
 		return 0
 	content = response.content.decode("utf-8")
+	print(len(content))
 
 	data = add_files_data_information_to_json_files(content, primary_site, experimental_strategy)
 
@@ -380,8 +381,8 @@ def add_files_data_information_to_json_files(content, primary_site, experimental
 
 
 if __name__ == '__main__':
-	if_files = False
-	#if_files = True
+	#if_files = False
+	if_files = True
 
 	#API endpoints.
 	cases_endpt = 'https://api.gdc.cancer.gov/cases'

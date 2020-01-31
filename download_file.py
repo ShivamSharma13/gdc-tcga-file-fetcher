@@ -2,7 +2,7 @@ import argparse
 import requests
 import json
 
-data_endpt = "https://api.gdc.cancer.gov/slicing/view/"
+data_endpt = "https://api.gdc.cancer.gov/data/"
 
 def download_file_from_gdc_api(file_uuid, token_file_path):
 	file_endpt = data_endpt + file_uuid
@@ -10,11 +10,9 @@ def download_file_from_gdc_api(file_uuid, token_file_path):
 	with open(token_file_path,"r") as token:
 		token_string = str(token.read().strip())
 
-	response = requests.post(data_endpt,
-						headers = {
-							"Content-Type": "application/json",
-							"X-Auth-Token": token_string
-							})
+	print(file_endpt)
+
+	response = requests.get(file_endpt, headers = {"Content-Type": "application/json", "X-Auth-Token": token_string})
 
 	file_name = file_uuid + ".bam"
 
