@@ -42,9 +42,9 @@ Hope this helps.
 ######################################################################################
 
 data_path = 'data/'
-strategies = ['miRNA-Seq', 'RNA-Seq', 'WXS', 'WGS']
-#primary_sites=['Ovary']
-primary_sites=['Colon']
+strategies = ['RNA-Seq']
+primary_sites=['Lung']
+#primary_sites=['Colon']
 
 sampe_id_to_type = {'01': 'Primary Solid Tumor', '11': 'Solid Tissue Normal', '10': 'Blood Derived Normal'}
 
@@ -58,7 +58,7 @@ def get_cases_from_gdc(endpt, data_size=2, json_file_name='miRNA.json', experime
 		"files.experimental_strategy",
 		"files.file_id",
 		"files.data_format",
-		"files.file_size",
+		"workflow_type"
 		]
 
 	fields = ','.join(fields)
@@ -105,11 +105,14 @@ def get_cases_from_gdc(endpt, data_size=2, json_file_name='miRNA.json', experime
 	return 1
 
 
-def get_files_from_gdc(endpt, data_size=1, json_file_name='miRNA.json', experimental_strategy_filter=None, primary_site_filter=None):
+def get_files_from_gdc(endpt, data_size=1, json_file_name='miRNA.json', experimental_strategy_filter=None, primary_site_filter=None, file_extension="BAM"):
 	fields = [
 		"cases.case_id",
 		"cases.samples.sample_type_id",
 		"data_format",
+		"experimental_strategy",
+		"analysis.workflow_type",
+		"file_name"
 		]
 
 	fields = ','.join(fields)
@@ -132,7 +135,7 @@ def get_files_from_gdc(endpt, data_size=1, json_file_name='miRNA.json', experime
 					"op": "in",
 					"content":{
 						"field": "cases.project.primary_site",
-						"value": ["Colorectal"],
+						"value": [primary_site],
 					}
 				},
 				{
@@ -146,7 +149,7 @@ def get_files_from_gdc(endpt, data_size=1, json_file_name='miRNA.json', experime
 					"op": "in",
 					"content":{
 						"field": "files.data_format",
-						"value": ["BAM"]
+						"value": [file_extension]
 					}
 				}
 		]
@@ -165,7 +168,6 @@ def get_files_from_gdc(endpt, data_size=1, json_file_name='miRNA.json', experime
 		print("Internet Error, perhaps a query error?")
 		return 0
 	content = response.content.decode("utf-8")
-	print(len(content))
 
 	data = add_files_data_information_to_json_files(content, primary_site, experimental_strategy)
 
@@ -334,7 +336,6 @@ def add_files_data_information_to_json_files(content, primary_site, experimental
 			stored_cases_data = json.load(f)
 	except FileNotFoundError:
 		return 0
-	#print(cases_data)
 
 	#Iterating over rows of files data.
 	#Looks like:
@@ -379,14 +380,13 @@ def add_files_data_information_to_json_files(content, primary_site, experimental
 
 
 
-
 if __name__ == '__main__':
-	#if_files = False
-	if_files = True
+	if_files = False
+	#if_files = True
 
 	#API endpoints.
-	cases_endpt = 'https://api.gdc.cancer.gov/cases'
-	files_endpt = 'https://api.gdc.cancer.gov/files'
+	cases_endpt = 'https://api.gdc.cancer.gov/legacy/cases'
+	files_endpt = 'https://api.gdc.cancer.gov/legacy/files'
 	
 	#Switch this bool if you want to replace the existing files.
 	replace = True
@@ -408,7 +408,8 @@ if __name__ == '__main__':
 								data_size=10000000, 
 								json_file_name=json_file_name, 
 								experimental_strategy_filter=strategy, 
-								primary_site_filter=primary_site)
+								primary_site_filter=primary_site,
+								file_extension='BAM')
 			else:						
 				status = get_cases_from_gdc(cases_endpt, 
 									data_size=1000000, 
